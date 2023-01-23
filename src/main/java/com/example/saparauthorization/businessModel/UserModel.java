@@ -7,9 +7,18 @@ import lombok.Setter;
 @Setter
 public class UserModel {
     private long id;
+    private String email;
     private String firstName;
     private String lastName;
     private String roleName;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     public long getId() {
         return id;

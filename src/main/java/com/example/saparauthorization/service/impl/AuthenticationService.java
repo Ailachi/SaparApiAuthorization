@@ -10,6 +10,9 @@ public class AuthenticationService implements IAuthenticationService {
 
     @Override
     public UserModel login(LoginModel model) {
+        UserModel user = new UserModel();
+        user.setEmail(model.getEmail());
+        user.setFirstName(model.getPassword());
         return new UserModel();
     }
 }
