@@ -1,7 +1,11 @@
 package com.example.saparauthorization.businessModel;
 
 import jakarta.validation.constraints.*;
+import lombok.Getter;
+import lombok.Setter;
 
+@Setter
+@Getter
 public class LoginModel {
     @NotNull
     @NotBlank
@@ -28,10 +32,5 @@ public class LoginModel {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    @Override
-    public String toString() {
-        return this.email;
     }
 }
