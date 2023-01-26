@@ -1,7 +1,5 @@
 package com.example.saparauthorization.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -18,6 +16,8 @@ public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long roleId;
+
+    @Column
     private String roleName;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "role")
     private List<User> users;
