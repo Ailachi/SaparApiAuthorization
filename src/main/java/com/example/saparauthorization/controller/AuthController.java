@@ -9,6 +9,11 @@ import com.example.saparauthorization.model.User;
 import com.example.saparauthorization.service.IAuthenticationService;
 
 import com.example.saparauthorization.util.ApiResponse;
+import com.example.saparauthorization.viewModel.login.LoginResponseData;
+import com.example.saparauthorization.viewModel.login.LoginResponseModel;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +58,7 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<UserModel>login(@RequestBody LoginModel model) {
         model.setEmail("ASDASDASDASDSAD");
+        System.out.println(model.getEmail());
         return ResponseEntity.ok(authenticationService.login(model));
     }
 
@@ -75,9 +81,12 @@ public class AuthController {
         return response;
     }
 
-    @PostMapping(value = "/test2")
-    public String test2(@RequestBody String testReq2) {
-        System.out.println(testReq2);
-        return testReq2;
+    @PostMapping(value = "/test2", produces = MediaType.APPLICATION_JSON_VALUE)
+    public String test2(@RequestBody String testReq2) throws JsonProcessingException {
+        LoginResponseModel lg = new LoginResponseModel();
+        lg.setResponseData(new LoginResponseData());
+        lg.getResponseData().getUser().setEmail("gjgjfjkf");
+        String jsonNode = new ObjectMapper().writeValueAsString(lg);
+        return jsonNode;
     }
 }
