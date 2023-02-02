@@ -8,7 +8,8 @@ import com.example.saparauthorization.mappers.SaparMapper;
 import com.example.saparauthorization.model.User;
 import com.example.saparauthorization.service.IAuthenticationService;
 
-import com.example.saparauthorization.util.ApiResponse;
+
+import com.example.saparauthorization.service.impl.AuthenticationService;
 import com.example.saparauthorization.viewModel.login.LoginResponseData;
 import com.example.saparauthorization.viewModel.login.LoginResponseModel;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -39,10 +40,10 @@ public class AuthController {
     @Autowired
     private WebClientBuilder webClientBuilder;
     private SaparMapper mapper;
-    private IAuthenticationService authenticationService;
+    private AuthenticationService authenticationService;
 
     @Autowired
-    public AuthController(SaparMapper mapper, IAuthenticationService authenticationService) {
+    public AuthController(SaparMapper mapper, AuthenticationService authenticationService) {
 
         this.mapper = mapper;
         this.authenticationService = authenticationService;
@@ -51,15 +52,14 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity register(@RequestBody RegistrationModel model) {
-        User user = mapper.RegistrationModelToUser(model);
-        return new ResponseEntity<ApiResponse<User>>(new ApiResponse<User>(user), HttpStatus.OK);
+        return ResponseEntity.ok("Ok");
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<UserModel>login(@RequestBody LoginModel model) {
-        model.setEmail("ASDASDASDASDSAD");
-        System.out.println(model.getEmail());
-        return ResponseEntity.ok(authenticationService.login(model));
+    @PostMapping(value="/login", produces = MediaType.APPLICATION_JSON_VALUE)
+    public LoginResponseModel login(@RequestBody LoginModel model) throws Exception {
+        UserModel user = authenticationService.login(model);
+        LoginResponseModel responseModel = new LoginResponseModel(new LoginResponseData(user));
+        return responseModel;
     }
 
 
@@ -83,10 +83,11 @@ public class AuthController {
 
     @PostMapping(value = "/test2", produces = MediaType.APPLICATION_JSON_VALUE)
     public String test2(@RequestBody String testReq2) throws JsonProcessingException {
-        LoginResponseModel lg = new LoginResponseModel();
-        lg.setResponseData(new LoginResponseData());
-        lg.getResponseData().getUser().setEmail("gjgjfjkf");
-        String jsonNode = new ObjectMapper().writeValueAsString(lg);
+//        LoginResponseModel lg = new LoginResponseModel();
+//        lg.setResponseData(new LoginResponseData());
+//        lg.getResponseData().getUser().setEmail("gjgjfjkf");
+//        String jsonNode = new ObjectMapper().writeValueAsString(lg);
+        String jsonNode = new ObjectMapper().writeValueAsString(new UserModel());
         return jsonNode;
     }
 }

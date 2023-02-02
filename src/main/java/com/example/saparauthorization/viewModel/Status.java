@@ -8,4 +8,11 @@ import lombok.Setter;
 public class Status {
     private String statusCode;
     private String statusCodeDesc;
+
+    public Status(){}
+    public Status(String statusCode, String statusCodeDesc) {
+        this.statusCode = statusCode;
+        this.statusCodeDesc = statusCodeDesc;
+    }
+
 }

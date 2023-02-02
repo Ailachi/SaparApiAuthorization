@@ -1,6 +1,6 @@
 package com.example.saparauthorization.service.impl;
 
-import com.example.saparauthorization.configuration.Configuration;
+
 import com.example.saparauthorization.service.WebClientBuilder;
 import io.netty.channel.ChannelOption;
 import io.netty.handler.timeout.ReadTimeoutHandler;

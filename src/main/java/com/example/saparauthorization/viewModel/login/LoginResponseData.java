@@ -8,4 +8,16 @@ import lombok.Setter;
 @Setter
 public class LoginResponseData {
     private UserModel user;
+
+    public LoginResponseData(UserModel user) {
+        this.user = user;
+    }
+
+    public UserModel getUser() {
+        return user;
+    }
+
+    public void setUser(UserModel user) {
+        this.user = user;
+    }
 }
