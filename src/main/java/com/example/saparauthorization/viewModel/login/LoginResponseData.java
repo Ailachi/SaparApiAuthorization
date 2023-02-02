@@ -12,12 +12,4 @@ public class LoginResponseData {
     public LoginResponseData(UserModel user) {
         this.user = user;
     }
-
-    public UserModel getUser() {
-        return user;
-    }
-
-    public void setUser(UserModel user) {
-        this.user = user;
-    }
 }

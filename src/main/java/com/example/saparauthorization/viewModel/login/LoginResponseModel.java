@@ -16,20 +16,4 @@ public class LoginResponseModel {
         this.status = new Status(Util.SUCCESS_CODE, Util.SUCCESS_MESSAGE);
         this.responseData = responseData;
     }
-
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
-    }
-
-    public LoginResponseData getResponseData() {
-        return responseData;
-    }
-
-    public void setResponseData(LoginResponseData responseData) {
-        this.responseData = responseData;
-    }
 }
