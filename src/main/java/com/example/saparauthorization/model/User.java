@@ -1,10 +1,10 @@
 package com.example.saparauthorization.model;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.springframework.stereotype.Component;
+
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

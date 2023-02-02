@@ -52,6 +52,7 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity register(@RequestBody RegistrationModel model) {
+
         return ResponseEntity.ok("Ok");
     }
 
