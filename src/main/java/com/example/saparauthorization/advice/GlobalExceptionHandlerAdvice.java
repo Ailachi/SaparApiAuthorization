@@ -1,6 +1,5 @@
 package com.example.saparauthorization.advice;
 
-import com.example.saparauthorization.util.ApiErrorResponse;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -21,7 +20,6 @@ public class GlobalExceptionHandlerAdvice extends ResponseEntityExceptionHandler
     @Override
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
-        ApiErrorResponse response = new ApiErrorResponse(ex.getStatusCode().toString(),ex.getDetailMessageCode(), ex.getMessage());
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok("Validation Error, mate");
     }
 }
