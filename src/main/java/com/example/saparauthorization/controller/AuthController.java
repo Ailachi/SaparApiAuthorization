@@ -4,27 +4,21 @@ package com.example.saparauthorization.controller;
 import com.example.saparauthorization.businessModel.LoginModel;
 import com.example.saparauthorization.businessModel.RegistrationModel;
 import com.example.saparauthorization.businessModel.UserModel;
+import com.example.saparauthorization.errorHandling.ErrorData;
+import com.example.saparauthorization.errorHandling.ServiceFaultException;
 import com.example.saparauthorization.mappers.SaparMapper;
-import com.example.saparauthorization.model.User;
-import com.example.saparauthorization.service.IAuthenticationService;
-
-
+import com.example.saparauthorization.service.WebClientBuilder;
 import com.example.saparauthorization.service.impl.AuthenticationService;
 import com.example.saparauthorization.viewModel.login.LoginResponseData;
 import com.example.saparauthorization.viewModel.login.LoginResponseModel;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.validation.Valid;
+import jakarta.annotation.security.PermitAll;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-
-import com.example.saparauthorization.service.WebClientBuilder;
-
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,6 +29,7 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "/auth")
+@PermitAll
 public class AuthController {
 
     @Autowired
@@ -56,7 +51,7 @@ public class AuthController {
         return ResponseEntity.ok("Ok");
     }
 
-    @PostMapping(value="/login", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
     public LoginResponseModel login(@RequestBody LoginModel model) throws Exception {
         UserModel user = authenticationService.login(model);
         LoginResponseModel responseModel = new LoginResponseModel(new LoginResponseData(user));
@@ -83,12 +78,13 @@ public class AuthController {
     }
 
     @PostMapping(value = "/test2", produces = MediaType.APPLICATION_JSON_VALUE)
-    public String test2(@RequestBody String testReq2) throws JsonProcessingException {
+    public String test2(@RequestBody String testReq2) throws JsonProcessingException, ServiceFaultException {
 //        LoginResponseModel lg = new LoginResponseModel();
 //        lg.setResponseData(new LoginResponseData());
 //        lg.getResponseData().getUser().setEmail("gjgjfjkf");
 //        String jsonNode = new ObjectMapper().writeValueAsString(lg);
-        String jsonNode = new ObjectMapper().writeValueAsString(new UserModel());
-        return jsonNode;
+//        String jsonNode = new ObjectMapper().writeValueAsString(new UserModel());
+//        return jsonNode;
+        throw new ServiceFaultException(new ErrorData(null, "blablabla"));
     }
 }
