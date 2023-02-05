@@ -25,7 +25,9 @@ public class User {
     private String password;
     private LocalDate birthDate;
     private Boolean isDeleted;
+    @Transient
     private Boolean isVerified;
+    @Transient
     private LocalDateTime creationDate;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "roleId")

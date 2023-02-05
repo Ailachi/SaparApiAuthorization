@@ -1,4 +1,4 @@
-package com.example.saparauthorization.service;
+package com.example.saparauthorization.service.authentication;
 
 import com.example.saparauthorization.businessModel.LoginModel;
 import com.example.saparauthorization.businessModel.UserModel;

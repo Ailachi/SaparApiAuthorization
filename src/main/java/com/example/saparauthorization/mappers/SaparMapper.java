@@ -9,10 +9,12 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring")
 public interface SaparMapper {
     User RegistrationModelToUser(RegistrationModel registrationModel);
-    RegistrationModel UserToRegistrationModel(User userModel);
+    RegistrationModel UserToRegistrationModel(User user);
 
     UserModel LoginModelToUser(LoginModel loginModel);
     LoginModel UserToLoginModel(UserModel userModel);
@@ -25,4 +27,6 @@ public interface SaparMapper {
     static String RoleToRoleName(Role role) {
         return role.getRoleName();
     }
+
+    List<UserModel> map(List<User> users);
 }

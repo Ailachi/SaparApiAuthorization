@@ -1,14 +1,16 @@
-package com.example.saparauthorization.service.impl;
+package com.example.saparauthorization.service.Users;
 import com.example.saparauthorization.businessModel.UserModel;
 import com.example.saparauthorization.mappers.SaparMapper;
 import com.example.saparauthorization.model.User;
 import com.example.saparauthorization.repository.UserRepository;
-import com.example.saparauthorization.service.IUserService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
+@Transactional
 @Service
 public class UserService implements IUserService {
 
@@ -67,6 +69,12 @@ public class UserService implements IUserService {
             throw new Exception("No such user exception");
 
         return mapper.UserToUserModel(user);
+    }
+
+    @Override
+    public List<UserModel> findAll() {
+        List<UserModel> users = mapper.map(userRepository.findAll());
+        return users;
     }
 
 }

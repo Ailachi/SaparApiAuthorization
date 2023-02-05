@@ -1,9 +1,9 @@
-package com.example.saparauthorization.service.impl;
+package com.example.saparauthorization.service.authentication;
 
 import com.example.saparauthorization.businessModel.LoginModel;
 import com.example.saparauthorization.businessModel.UserModel;
 import com.example.saparauthorization.mappers.SaparMapper;
-import com.example.saparauthorization.service.IAuthenticationService;
+import com.example.saparauthorization.service.Users.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

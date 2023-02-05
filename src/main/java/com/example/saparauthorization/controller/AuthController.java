@@ -3,36 +3,30 @@ package com.example.saparauthorization.controller;
 
 import com.example.saparauthorization.businessModel.LoginModel;
 import com.example.saparauthorization.businessModel.RegistrationModel;
-import com.example.saparauthorization.businessModel.UserModel;
 import com.example.saparauthorization.mappers.SaparMapper;
-import com.example.saparauthorization.model.User;
-import com.example.saparauthorization.service.IAuthenticationService;
-
-
-import com.example.saparauthorization.service.impl.AuthenticationService;
-import com.example.saparauthorization.viewModel.login.LoginResponseData;
-import com.example.saparauthorization.viewModel.login.LoginResponseModel;
+import com.example.saparauthorization.security.jwt.JwtUtils;
+import com.example.saparauthorization.service.Users.JwtUserDetails;
+import com.example.saparauthorization.service.authentication.AuthenticationService;
+import com.example.saparauthorization.service.Users.UserService;
+import com.example.saparauthorization.service.WebClientBuilder;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.validation.Valid;
+import jakarta.annotation.security.PermitAll;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-
-import com.example.saparauthorization.service.WebClientBuilder;
-
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+
 @RequiredArgsConstructor
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping(value = "/auth")
 public class AuthController {
@@ -41,12 +35,19 @@ public class AuthController {
     private WebClientBuilder webClientBuilder;
     private SaparMapper mapper;
     private AuthenticationService authenticationService;
+    private UserService userService;
 
     @Autowired
-    public AuthController(SaparMapper mapper, AuthenticationService authenticationService) {
+    AuthenticationManager authenticationManager;
+    @Autowired
+    JwtUtils jwtUtils;
+
+    @Autowired
+    public AuthController(SaparMapper mapper, AuthenticationService authenticationService, UserService userService) {
 
         this.mapper = mapper;
         this.authenticationService = authenticationService;
+        this.userService = userService;
 
     }
 
@@ -56,11 +57,13 @@ public class AuthController {
         return ResponseEntity.ok("Ok");
     }
 
-    @PostMapping(value="/login", produces = MediaType.APPLICATION_JSON_VALUE)
-    public LoginResponseModel login(@RequestBody LoginModel model) throws Exception {
-        UserModel user = authenticationService.login(model);
-        LoginResponseModel responseModel = new LoginResponseModel(new LoginResponseData(user));
-        return responseModel;
+    @PostMapping(value = "/login")
+    public ResponseEntity login(@RequestBody LoginModel model) {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(model.getEmail(), model.getPassword()));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String jwt = jwtUtils.generateJwtToken(authentication);
+        return ResponseEntity.ok(jwt);
     }
 
 
@@ -82,13 +85,8 @@ public class AuthController {
         return response;
     }
 
-    @PostMapping(value = "/test2", produces = MediaType.APPLICATION_JSON_VALUE)
-    public String test2(@RequestBody String testReq2) throws JsonProcessingException {
-//        LoginResponseModel lg = new LoginResponseModel();
-//        lg.setResponseData(new LoginResponseData());
-//        lg.getResponseData().getUser().setEmail("gjgjfjkf");
-//        String jsonNode = new ObjectMapper().writeValueAsString(lg);
-        String jsonNode = new ObjectMapper().writeValueAsString(new UserModel());
-        return jsonNode;
+    @GetMapping(value = "/test2", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity test2() throws JsonProcessingException {
+        return ResponseEntity.ok(userService.findAll());
     }
 }

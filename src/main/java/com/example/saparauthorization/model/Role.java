@@ -16,10 +16,14 @@ public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+//    @Enumerated(EnumType.STRING)
+    @Column
     private String roleName;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "role")
     private List<User> users;
 
-
 }
+
+
 
