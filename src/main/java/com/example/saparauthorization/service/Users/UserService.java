@@ -1,10 +1,13 @@
 package com.example.saparauthorization.service.Users;
+import com.example.saparauthorization.businessModel.RegistrationModel;
 import com.example.saparauthorization.businessModel.UserModel;
 import com.example.saparauthorization.mappers.SaparMapper;
+import com.example.saparauthorization.model.Role;
 import com.example.saparauthorization.model.User;
 import com.example.saparauthorization.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,11 +20,14 @@ public class UserService implements IUserService {
     private UserRepository userRepository;
     private SaparMapper mapper;
 
+    private PasswordEncoder passwordEncoder;
+
     public UserService() {}
     @Autowired
-    public UserService(UserRepository userRepository, SaparMapper mapper) {
+    public UserService(UserRepository userRepository, SaparMapper mapper, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.mapper = mapper;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -39,8 +45,17 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public UserModel create(UserModel userModel) {
-        return null;
+    public UserModel create(RegistrationModel model) throws Exception {
+        if(userRepository.existsByEmail(model.getEmail())) {
+            throw new Exception("Such User Already exists");
+        }
+
+        User user = mapper.RegistrationModelToUser(model);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRole(new Role(2, "Customer"));
+
+        User newUser = userRepository.save(user);
+        return mapper.UserToUserModel(newUser);
     }
 
     @Override
@@ -58,7 +73,7 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public UserModel findUserByEmailAndPassowrd(String email, String password) throws Exception {
+    public UserModel findUserByEmailAndPassword(String email, String password) throws Exception {
         if(email == null || email.isEmpty()) {
             throw new Exception("Id is out of range");
         }

@@ -22,7 +22,7 @@ public class BeanConfiguration {
     PasswordEncoder encoder;
     @Bean
     public void getPassword() {
-        System.out.println(new BCryptPasswordEncoder().encode("anuar123"));
+        System.out.println(new BCryptPasswordEncoder().encode("anuar123_"));
     }
 
 //    @Bean

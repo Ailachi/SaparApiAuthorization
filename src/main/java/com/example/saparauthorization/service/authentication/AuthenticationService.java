@@ -24,7 +24,7 @@ public class AuthenticationService implements IAuthenticationService {
     }
     @Override
     public UserModel login(@Valid LoginModel model) throws Exception {
-        UserModel userModel = userService.findUserByEmailAndPassowrd(model.getEmail(), model.getPassword());
+        UserModel userModel = userService.findUserByEmailAndPassword(model.getEmail(), model.getPassword());
         return userModel;
     }
 }

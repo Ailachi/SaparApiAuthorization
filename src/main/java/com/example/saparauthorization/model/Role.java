@@ -23,6 +23,11 @@ public class Role {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "role")
     private List<User> users;
 
+    public Role() {}
+    public Role(long id, String roleName) {
+        this.id = id;
+        this.roleName = roleName;
+    }
 }
 
 

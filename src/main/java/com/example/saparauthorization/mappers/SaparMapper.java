@@ -16,12 +16,12 @@ public interface SaparMapper {
     User RegistrationModelToUser(RegistrationModel registrationModel);
     RegistrationModel UserToRegistrationModel(User user);
 
+    UserModel RegistrationModelToUserModel(RegistrationModel registrationModel);
     UserModel LoginModelToUser(LoginModel loginModel);
     LoginModel UserToLoginModel(UserModel userModel);
 
     @Mapping(source = "role", target = "roleName", qualifiedByName = "roleToRoleName")
     UserModel UserToUserModel(User user);
-    User UserModelToUser(UserModel userModel);
 
     @Named("roleToRoleName")
     static String RoleToRoleName(Role role) {

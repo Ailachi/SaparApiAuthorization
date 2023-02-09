@@ -15,6 +15,6 @@ public class LoginModel {
     @NotNull
     @NotBlank
     @Size(min=8, max=20, message = "Validation size error!")
-    @Pattern(regexp = "^(?=.*[0-9])(?=.*[A-z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$")
+    @Pattern(regexp = "^(?=.*[0-9])(?=.*[A-z])(?=.*[!@#&()–[{}]_:;',?/*~$^+=<>]).{8,20}$")
     private String password;
 }

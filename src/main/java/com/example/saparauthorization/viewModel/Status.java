@@ -1,5 +1,6 @@
 package com.example.saparauthorization.viewModel;
 
+import com.example.saparauthorization.util.Util;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,6 +14,10 @@ public class Status {
     public Status(String statusCode, String statusCodeDesc) {
         this.statusCode = statusCode;
         this.statusCodeDesc = statusCodeDesc;
+    }
+
+    public static Status Successful() {
+        return new Status(Util.SUCCESS_CODE, Util.SUCCESS_MESSAGE);
     }
 
 }

@@ -8,8 +8,9 @@ import lombok.Setter;
 @Setter
 public class LoginResponseData {
     private UserModel user;
-
-    public LoginResponseData(UserModel user) {
+    private String token;
+    public LoginResponseData(UserModel user, String token) {
         this.user = user;
+        this.token = token;
     }
 }

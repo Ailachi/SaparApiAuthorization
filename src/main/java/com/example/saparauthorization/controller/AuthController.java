@@ -3,14 +3,22 @@ package com.example.saparauthorization.controller;
 
 import com.example.saparauthorization.businessModel.LoginModel;
 import com.example.saparauthorization.businessModel.RegistrationModel;
+import com.example.saparauthorization.businessModel.UserModel;
 import com.example.saparauthorization.mappers.SaparMapper;
 import com.example.saparauthorization.security.jwt.JwtUtils;
 import com.example.saparauthorization.service.Users.JwtUserDetails;
 import com.example.saparauthorization.service.authentication.AuthenticationService;
 import com.example.saparauthorization.service.Users.UserService;
 import com.example.saparauthorization.service.WebClientBuilder;
+
+import com.example.saparauthorization.viewModel.Status;
+import com.example.saparauthorization.viewModel.login.LoginResponseData;
+import com.example.saparauthorization.viewModel.login.LoginResponseModel;
+import com.example.saparauthorization.viewModel.registration.RegistrationResponseData;
+import com.example.saparauthorization.viewModel.registration.RegistrationResponseModel;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.annotation.security.PermitAll;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -52,18 +60,20 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity register(@RequestBody RegistrationModel model) {
-
-        return ResponseEntity.ok("Ok");
+    public RegistrationResponseModel register(@Valid @RequestBody RegistrationModel model) throws Exception {
+        UserModel userModel = userService.create(model);
+        return new RegistrationResponseModel(new RegistrationResponseData(userModel));
     }
 
     @PostMapping(value = "/login")
-    public ResponseEntity login(@RequestBody LoginModel model) {
+    public LoginResponseModel login(@Valid @RequestBody LoginModel model) throws Exception {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(model.getEmail(), model.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtUtils.generateJwtToken(authentication);
-        return ResponseEntity.ok(jwt);
+        UserModel user = userService.findUserByEmail(model.getEmail());
+        LoginResponseData responseData = new LoginResponseData(user, jwt);
+        return new LoginResponseModel(responseData);
     }
 
 
@@ -86,7 +96,7 @@ public class AuthController {
     }
 
     @GetMapping(value = "/test2", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity test2() throws JsonProcessingException {
-        return ResponseEntity.ok(userService.findAll());
+    public String test2() throws JsonProcessingException {
+        return "Sa";
     }
 }
