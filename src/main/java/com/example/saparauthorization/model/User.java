@@ -29,7 +29,7 @@ public class User {
     private Boolean isVerified;
     @Transient
     private LocalDateTime creationDate;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "roleId")
     private Role role;
 

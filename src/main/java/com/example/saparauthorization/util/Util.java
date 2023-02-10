@@ -8,4 +8,12 @@ public class Util {
     public static final String SUCCESS_MESSAGE = "SUCCESS";
     public static final String TIMEOUT_CODE = "300";
     public static final String TIMEOUT_MESSAGE = "TIMEOUT";
+    public static final String VALIDATION_ERROR_MESSAGE = "VALIDATION ERROR";
+    public static final String VALIDATION_ERROR_CODE = "400";
+    public static final String BAD_CREDENTIALS_ERROR_CODE = "401";
+    public static final String BAD_CREDENTIALS_ERROR_MESSAGE = "Bad Credentials";
+
+
+
+
 }

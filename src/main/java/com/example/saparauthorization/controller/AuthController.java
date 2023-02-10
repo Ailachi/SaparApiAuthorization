@@ -2,6 +2,7 @@ package com.example.saparauthorization.controller;
 
 
 import com.example.saparauthorization.businessModel.LoginModel;
+import com.example.saparauthorization.businessModel.RefreshTokenModel;
 import com.example.saparauthorization.businessModel.RegistrationModel;
 import com.example.saparauthorization.businessModel.UserModel;
 import com.example.saparauthorization.mappers.SaparMapper;
@@ -71,9 +72,19 @@ public class AuthController {
                 new UsernamePasswordAuthenticationToken(model.getEmail(), model.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtUtils.generateJwtToken(authentication);
+
+        JwtUserDetails userPrincipal = (JwtUserDetails) authentication.getPrincipal();
+        String refreshToken = jwtUtils.generateRefreshToken(userPrincipal.getEmail());
+
         UserModel user = userService.findUserByEmail(model.getEmail());
-        LoginResponseData responseData = new LoginResponseData(user, jwt);
+        LoginResponseData responseData = new LoginResponseData(user, jwt, refreshToken);
         return new LoginResponseModel(responseData);
+    }
+
+    @PostMapping(value = "/refreshToken")
+    public ResponseEntity refreshToken(@RequestBody RefreshTokenModel refreshTokenModel) {
+        String newRefreshToken = jwtUtils.generateRefreshToken(refreshTokenModel.getRefreshToken());
+        return ResponseEntity.ok(newRefreshToken);
     }
 
 

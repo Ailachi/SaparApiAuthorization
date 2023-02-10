@@ -1,6 +1,5 @@
 package com.example.saparauthorization.controller;
 
-import jakarta.annotation.security.PermitAll;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,4 +14,10 @@ public class TestController {
     public String test() {
         return "Test method";
     }
+
+//    @GetMapping("/exception")
+//    public int throwException() {
+//        throw new Internal
+//        return 1/0;
+//    }
 }

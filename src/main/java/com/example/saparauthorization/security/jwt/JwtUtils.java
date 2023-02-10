@@ -17,8 +17,13 @@ public class JwtUtils implements Serializable {
     private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
     @Value("${app.jwtSecret}")
     private String jwtSecret;
+    @Value("${app.jwtRefreshSecret}")
+    private String jwtRefreshSecret;
     @Value("${app.jwtExpirationMs}")
     private int jwtExpirationMs;
+
+    @Value("${app.jwtRefreshExpirationMs}")
+    private int jwtRefreshExpirationMs;
 
     public JwtUtils() {
     }
@@ -32,6 +37,14 @@ public class JwtUtils implements Serializable {
                 .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();
+    }
+
+    public String generateRefreshToken(String subject) {
+
+        return Jwts.builder().setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + jwtRefreshExpirationMs))
+                .signWith(SignatureAlgorithm.HS512, jwtRefreshSecret).compact();
+
     }
 
     public String getEmailFromJwtToken(String token) {
@@ -53,7 +66,24 @@ public class JwtUtils implements Serializable {
         } catch (IllegalArgumentException e) {
             logger.error("JWT claims string is empty: {}", e.getMessage());
         }
+        return false;
+    }
 
+    public boolean isRefreshTokenValid(String refreshToken) {
+        try {
+            Jwts.parser().setSigningKey(jwtRefreshSecret).parseClaimsJws(refreshToken);
+            return true;
+        } catch (SignatureException e) {
+            logger.error("Invalid JWT signature: {}", e.getMessage());
+        } catch (MalformedJwtException e) {
+            logger.error("Invalid JWT token: {}", e.getMessage());
+        } catch (ExpiredJwtException e) {
+            logger.error("JWT token is expired: {}", e.getMessage());
+        } catch (UnsupportedJwtException e) {
+            logger.error("JWT token is unsupported: {}", e.getMessage());
+        } catch (IllegalArgumentException e) {
+            logger.error("JWT claims string is empty: {}", e.getMessage());
+        }
         return false;
     }
 }

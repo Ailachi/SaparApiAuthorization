@@ -1,6 +1,7 @@
 package com.example.saparauthorization.repository;
 
 import com.example.saparauthorization.model.User;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

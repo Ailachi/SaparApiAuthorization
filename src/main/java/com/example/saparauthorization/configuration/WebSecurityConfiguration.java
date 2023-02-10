@@ -1,5 +1,6 @@
 package com.example.saparauthorization.configuration;
 
+import com.example.saparauthorization.model.Roles;
 import com.example.saparauthorization.security.jwt.AuthEntryPointJwt;
 import com.example.saparauthorization.security.jwt.AuthTokenFilter;
 import com.example.saparauthorization.service.Users.JwtUserDetailsService;
@@ -61,6 +62,8 @@ public class WebSecurityConfiguration {
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeHttpRequests().requestMatchers("/auth/**").permitAll()
+                .requestMatchers("/test/**").permitAll()
+                .requestMatchers("/users/**").hasAuthority(Roles.ADMIN)
                 .anyRequest().authenticated();
 
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);

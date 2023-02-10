@@ -13,7 +13,9 @@ public class ErrorData {
     private String errorMessage;
 
 
-    public ErrorData(String status, String statusDesc, String errorMessage) {
 
+    public ErrorData(Status status, String errorMessage) {
+        this.status = status;
+        this.errorMessage = errorMessage;
     }
 }

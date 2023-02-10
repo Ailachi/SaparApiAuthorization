@@ -9,8 +9,11 @@ import lombok.Setter;
 public class LoginResponseData {
     private UserModel user;
     private String token;
-    public LoginResponseData(UserModel user, String token) {
+    private String refreshToken;
+    public LoginResponseData(UserModel user, String token, String refreshToken) {
         this.user = user;
         this.token = token;
+        this.refreshToken = refreshToken;
+
     }
 }
